@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Flavours</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        /* Navbar styles */
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        /* Content container */
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Search form */
+        .search-form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Search results */
+        .search-results {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .card {
+            width: 250px;
+            margin: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .container-card {
+            padding: 16px;
+            text-align: center;
+        }
+
+        .container-card h4 {
+            margin: 10px 0;
+        }
+
+        .container-card p {
+            margin: 8px 0;
+            color: #666;
+        }
+
+        .container-card h5 {
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        /* Button styles */
+        .btn {
+            background-color: #ff6347;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            width: 100%; /* Full width button */
+        }
+
+        .btn:hover {
+            background-color: #ffd700;
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Footer styling */
+        .footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+</div>
+
+<!-- Content -->
+<div class="content">
+
+    <h1 style="text-align: center;">Search Flavours</h1>
+
+    <!-- Search form -->
+    <form class="search-form" method="POST" action="/search">
+        <label for="search">Search Flavours:</label>
+        <input type="text" id="search" name="search" value="{{ search_term }}">
+        <button type="submit" class="btn">Search</button>
+    </form>
+
+    <!-- Search Results -->
+    <div class="search-results">
+        {% if flavours %}
+            {% for flavour in flavours %}
+                <div class="card">
+                    <img src="/static/images/flavour_placeholder.webp" alt="Flavour Image">
+                    <div class="container-card">
+                        <h4>{{ flavour['flavor_name'] }}</h4>
+                        <p>Season: {{ flavour['seasonal_availability'] }}</p>
+                        <h5>Inventory:</h5>
+                        <table>
+                            <tr>
+                                <th>Ingredient</th>
+                                <th>Quantity</th>
+                            </tr>
+                            {% if inventory[flavour['id']] %}
+                                {% for item in inventory[flavour['id']] %}
+                                    <tr>
+                                        <td>{{ item['ingredient'] }}</td>
+                                        <td>{{ item['quantity'] }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="2">No inventory found.</td>
+                                </tr>
+                            {% endif %}
+                        </table>
+                        <a href="#" class="btn">Order {{ flavour['flavor_name'] }}</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p style="text-align: center;">No flavours found.</p>
+        {% endif %}
+    </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    <p>&copy; 2024 Your Ice Cream Parlour. All rights reserved.</p>
+</div>
+
+</body>
+</html>

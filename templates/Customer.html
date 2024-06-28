@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ice Cream Parlor</title>
+    <style>
+      /* Reset some default styles */
+      body,
+      h1,
+      h2,
+      p,
+      ul {
+        margin: 0;
+        padding: 0;
+      }
+
+      /* General body style */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        color: #333;
+      }
+
+      /* Container */
+      .container {
+        width: 80%;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* Navbar */
+      .navbar {
+        background-color: #ff6347;
+        color: #fff;
+        padding: 10px 0;
+      }
+
+      .navbar .brand {
+        float: left;
+        font-size: 24px;
+        font-weight: bold;
+        padding-left: 20px;
+      }
+
+      .navbar .brand a {
+        color: #fff;
+        text-decoration: none;
+      }
+
+      .navbar .nav-links {
+        list-style: none;
+        float: right;
+        padding-right: 20px;
+      }
+
+      .navbar .nav-links li {
+        display: inline;
+        margin-left: 15px;
+      }
+
+      .navbar .nav-links a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s;
+      }
+
+      .navbar .nav-links a:hover {
+        color: #ffd700;
+      }
+
+      /* Main content */
+      .main-content {
+        text-align: center;
+        margin: 40px 0;
+      }
+
+      .main-content a {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #ff6347;
+        color: #fff;
+        text-decoration: none;
+        font-size: 18px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+      }
+
+      .main-content a:hover {
+        background-color: #ffd700;
+      }
+
+      /* Card styles */
+      .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .card {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        transition: 0.3s;
+        width: 250px;
+        margin: 15px;
+        background-color: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .card:hover {
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+      }
+
+      .card img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+      }
+
+      .container-card {
+        padding: 16px;
+        text-align: center;
+      }
+
+      .container-card h4 {
+        margin: 10px 0;
+      }
+
+      .btn {
+        background-color: #ff6347;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin-top: 10px;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+      }
+
+      .btn:hover {
+        background-color: #ffd700;
+      }
+
+      /* Footer */
+      footer {
+        background-color: #333;
+        color: #fff;
+        padding: 20px 0;
+        text-align: center;
+      }
+
+      .footer-content {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+      }
+
+      .footer-section {
+        width: 30%;
+        margin: 10px 0;
+      }
+
+      .footer-section h3 {
+        margin-bottom: 10px;
+      }
+
+      .footer-section p {
+        margin-bottom: 5px;
+      }
+
+      .footer-section ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .footer-section ul li {
+        margin-bottom: 5px;
+      }
+
+      .footer-section ul a {
+        color: #ffd700;
+        text-decoration: none;
+      }
+
+      .footer-section ul a:hover {
+        text-decoration: underline;
+      }
+
+      .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 60;
+            top: 20;
+            width: 200px; /* Full width */
+            height: 600px; /* Full height */
+            /* Black w/ opacity */
+        }
+
+        /* Style for the modal content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        /* Close button style */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+  </head>
+  <body>
+     <script>
+        // JavaScript code directly within the <script> tag
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the modal
+            var modal = document.getElementById("myModal");
+
+            // Get the image and insert it into the modal - use its "alt" text as a caption
+            var img = document.getElementById("image1");
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks on the image, open the modal
+            img.onclick = function() {
+                modal.style.display = "block";
+            }
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+        });
+    </script>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="container">
+        <div class="brand">
+          <a href="/">Ice Cream Parlor</a>
+        </div>
+        <ul class="nav-links">
+          <li><a href="/">LOGIN</a></li>
+          <li><a href="">About Us</a></li>
+          <li><a href="/customer">Customer</a></li>
+          <img src="/static/images/wishlist.png" alt="Image" id="image1" class="image-clickable" style="width: 20px">
+
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>Wishlist Number: <span id="wishlistNumber">12345</span></p>
+            </div>
+        </div>
+          <li><a href="">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Main content -->
+    <div class="main-content">
+      <h1>Welcome to Our Ice Cream Parlor</h1>
+
+      <div class="card-container">
+    {% for flavour in flavours %}
+    <div class="card">
+        <img src="/static/images/flavour_placeholder.webp" alt="Ice Cream" />
+        <div class="container-card">
+            <h4><b>{{ flavour['flavor_name'] }}</b></h4>
+            <p>Season: {{ flavour['seasonal_availability'] }}</p>
+            
+            <!-- Display Ingredients for the current flavor -->
+            <p><b>Ingredients:</b></p>
+            <ul>
+                {% for item in inventory %}
+                {% if item['flavor_id'] == flavour['id'] %}
+                {{ item['ingredient'] }}
+                {% endif %}
+                {% endfor %}
+            </ul>
+            
+            <button class="btn add-to-wishlist">Add to Wishlist</button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+   
+            
+<div class="content">
+    <h1>Welcome to the Ice Cream Parlour</h1>
+    <p>Explore our delicious flavours and order your favourite!</p>
+    <a href="/search" class="btn">Search Flavours</a>
+</div>
+<br>
+
+<div class="content">
+    <p>WE VALUE YOUR SUGEESTIONS</p>
+    <a href="suggestions.html" class="btn">Suggestions and feedback</a>
+</div>
+<br>
+
+    
+
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Contact Us</h3>
+            <p>123 Ice Cream St, Sweetville</p>
+            <p>Email: info@icecreamparlor.com</p>
+            <p>Phone: (123) 456-7890</p>
+          </div>
+          <div class="footer-section">
+            <h3>Follow Us</h3>
+            <ul class="social-media">
+              <li><a href="#">Facebook</a></li>
+              <li><a href="#">Twitter</a></li>
+              <li><a href="#">Instagram</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3>Business Hours</h3>
+            <p>Mon-Fri: 10am - 10pm</p>
+            <p>Sat-Sun: 11am - 11pm</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script>// wishlist
+
+
+
+
+
+</script>
+  </body>
+</html>
