@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Suggest a Flavor and Allergen</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background-image: url("/static/images/bg.jpg");
+        background-repeat: no-repeat;
+      }
+      .container {
+        margin-top: 2rem;
+      }
+      .card {
+        margin-bottom: 2rem;
+      }
+      .footer {
+        margin-top: auto;
+        background-color: #f8f9fa;
+        padding: 1rem;
+        text-align: center;
+      }
+      .navbar {
+        margin-bottom: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Randomised Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="/">Ice Cream Parlor</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/suggest-flavour">Suggest</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/search">Search Flavours</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container">
+      <!-- Flavor Suggestion from customer-->
+      <div class="card">
+        <div class="card-header">Suggest a New Flavor</div>
+        <div class="card-body">
+          <form id="flavorForm">
+            <input type="hidden" name="form_type" value="flavour" />
+            <div class="form-group">
+              <label for="flavor_name">Flavor Name:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="flavor_name"
+                name="flavor_name"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="ingredient">Ingredient:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="ingredient"
+                name="ingredient"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="seasonal_availability">Seasonal Availability:</label>
+              <select
+                class="form-control"
+                id="seasonal_availability"
+                name="seasonal_availability"
+              >
+                <option value="All Year">All Year</option>
+                <option value="Winter">Winter</option>
+                <option value="Spring">Spring</option>
+                <option value="Summer">Summer</option>
+                <option value="Fall">Fall</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Flavor</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Allergen suggestions from cutomer -->
+      <div class="card">
+        <div class="card-header">Suggest an Allergen</div>
+        <div class="card-body">
+          <form id="allergenForm">
+            <input type="hidden" name="form_type" value="allergen" />
+            <div class="form-group">
+              <label for="allergen_ingredient">Ingredient:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="allergen_ingredient"
+                name="allergen_ingredient"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="allergic_symptoms">Allergic Symptoms:</label>
+              <textarea
+                class="form-control"
+                id="allergic_symptoms"
+                name="allergic_symptoms"
+                rows="3"
+                required
+              ></textarea>
+            </div>
+            <button type="submit" class="btn btn-danger">
+              Submit Allergen
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!--Modal -->
+    <div
+      class="modal fade"
+      id="successModal"
+      tabindex="-1"
+      aria-labelledby="successModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="successModalLabel">Success</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p id="successMessage"></p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>&copy; 2024 Ice Cream Parlor. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+      $(document).ready(function () {
+        // Submit Flavor Form
+        $("#flavorForm").on("submit", function (event) {
+          event.preventDefault();
+          $.ajax({
+            type: "POST",
+            url: "/suggest-flavour",
+            data: $(this).serialize(),
+            success: function (response) {
+              if (response.success === "flavour") {
+                $("#successMessage").text(
+                  "Your flavor suggestion has been successfully submitted!"
+                );
+                $("#successModal").modal("show");
+                $("#flavorForm")[0].reset();
+              }
+            },
+            error: function () {
+              alert("There was an error submitting your flavor suggestion.");
+            },
+          });
+        });
+
+        // Submit Allergen Form
+        $("#allergenForm").on("submit", function (event) {
+          event.preventDefault();
+          $.ajax({
+            type: "POST",
+            url: "/suggest-flavour",
+            data: $(this).serialize(),
+            success: function (response) {
+              if (response.success === "allergen") {
+                $("#successMessage").text(
+                  "Your allergen suggestion has been successfully submitted!"
+                );
+                $("#successModal").modal("show");
+                $("#allergenForm")[0].reset();
+              }
+            },
+            error: function () {
+              alert("There was an error submitting your allergen suggestion.");
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

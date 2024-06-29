@@ -1,6 +1,6 @@
 import sqlite3
 
-#sqlite3 connection
+#connection
 conn = sqlite3.connect('myice_cream.db')
 cursor = conn.cursor()
 
@@ -24,6 +24,16 @@ cursor.execute('''
     )
 ''')
 
+
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Customer_sugested_flavour (
+        id INTEGER PRIMARY KEY,
+        flavor_name TEXT NOT NULL,
+        ingredient TEXT NOT NULL,
+        quantity INTEGER,
+        seasonal_availability TEXT
+    )
+''')
 
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS Allergens (
@@ -73,6 +83,9 @@ cursor.executemany('''
     INSERT INTO Allergens (ingredient, allergic_symptoms) VALUES (?, ?)
 ''', allergens_data)
 
-#save and close the connection to the database
+
 conn.commit()
 conn.close()
+
+
+# tihs is demo file this file need to be run only once during setup

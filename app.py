@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for,jsonify
 import sqlite3
 
 app = Flask(__name__)
@@ -12,46 +12,43 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
-# Route to display index page with login form
+#index page with login form
 @app.route('/')
 def index():
     return render_template('index.html')
 
-# Route to handle login form submission
+
 @app.route('/login', methods=['POST'])
 def login():
     username = request.form['username']
     password = request.form['password']
 
-    # Check if username and password are correct
+    # default username and password
     if username == 'user' and password == '1234':
         return redirect(url_for('admin'))
     else:
         return redirect(url_for('customer'))
 
-# Route to display admin page with all data from database
+#admin page
 @app.route('/admin')
 def admin():
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    # Fetch data from Flavours table
     cursor.execute('SELECT * FROM Flavours')
     flavours = cursor.fetchall()
-
-    # Fetch data from Inventory table
     cursor.execute('SELECT * FROM Inventory')
     inventory = cursor.fetchall()
-
-    # Fetch data from Allergens table
     cursor.execute('SELECT * FROM Allergens')
     allergens = cursor.fetchall()
+    cursor.execute('SELECT * FROM Customer_sugested_flavour')
+    Customer_sugested_flavour = cursor.fetchall()
 
     conn.close()
 
-    return render_template('admin.html', flavours=flavours, inventory=inventory, allergens=allergens)
+    return render_template('admin.html', flavours=flavours, inventory=inventory, allergens=allergens ,Customer_sugested_flavour=Customer_sugested_flavour )
 
-# Route to handle deletion of a flavour
+# deletion of a flavour,inventry,allergen
 @app.route('/delete_flavour/<int:id>', methods=['POST'])
 def delete_flavour(id):
     conn = get_db_connection()
@@ -60,8 +57,6 @@ def delete_flavour(id):
     conn.commit()
     conn.close()
     return redirect(url_for('admin'))
-
-# Route to handle deletion of an inventory item
 @app.route('/delete_inventory/<int:id>', methods=['POST'])
 def delete_inventory(id):
     conn = get_db_connection()
@@ -71,9 +66,25 @@ def delete_inventory(id):
     conn.close()
     return redirect(url_for('admin'))
 
+@app.route('/delete_allergen/<int:id>', methods=['POST'])
+def delete_allergen(id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM Allergens WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('admin'))
 
+@app.route('/delete_Sflavour/<int:id>', methods=['POST'])
+def delete_Sflavour(id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM Customer_sugested_flavour WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('admin'))
 
-# Route to handle increasing the quantity of an inventory item
+#iventry managment
 @app.route('/increase_quantity/<int:id>', methods=['POST'])
 def increase_quantity(id):
     conn = get_db_connection()
@@ -82,8 +93,6 @@ def increase_quantity(id):
     conn.commit()
     conn.close()
     return redirect(url_for('admin'))
-
-# Route to handle decreasing the quantity of an inventory item
 @app.route('/decrease_quantity/<int:id>', methods=['POST'])
 def decrease_quantity(id):
     conn = get_db_connection()
@@ -93,7 +102,7 @@ def decrease_quantity(id):
     conn.close()
     return redirect(url_for('admin'))
 
-# Route to handle customer page
+#customer page
 @app.route('/customer')
 def customer():
     conn = get_db_connection()
@@ -114,20 +123,14 @@ def customer():
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     conn = get_db_connection()
-
-    # Initialize variables
     flavours = []
     inventory = {}
 
     if request.method == 'POST':
         search_term = request.form['search']
         cursor = conn.cursor()
-
-        # Fetch flavours matching the search term
         cursor.execute('SELECT * FROM Flavours WHERE flavor_name LIKE ?', ('%' + search_term + '%',))
         flavours = cursor.fetchall()
-
-        # Fetch inventory details for each flavour found
         for flavour in flavours:
             cursor.execute('SELECT * FROM Inventory WHERE flavor_id = ?', (flavour['id'],))
             inventory[flavour['id']] = cursor.fetchall()
@@ -135,46 +138,44 @@ def search():
         conn.close()
 
         return render_template('search.html', flavours=flavours, inventory=inventory, search_term=search_term)
-
-    # Ensure to close the database connection in case of GET request or when no search term is provided
     conn.close()
 
     return render_template('search.html', flavours=flavours, inventory=inventory, search_term='')
 
+#suggestion page
+@app.route('/suggest-flavour', methods=['GET', 'POST'])
+def suggest_flavour():
+    if request.method == 'POST':
+        form_type = request.form.get('form_type')
 
-# Route to handle submission of suggestion form
-@app.route('/submit_suggestion', methods=['POST'])
-def submit_suggestion():
-    conn = get_db_connection()
+        if form_type == 'flavour':
+            flavor_name = request.form['flavor_name']
+            ingredient = request.form['ingredient']
+            seasonal_availability = request.form['seasonal_availability']
 
-    # Fetch form data
-    flavor_name = request.form['flavor_name']
-    suggestion = request.form['suggestion']
-    selected_ingredients = request.form.getlist('inventory')
+            conn = get_db_connection()
+            conn.execute('''
+                INSERT INTO Customer_sugested_flavour (flavor_name, ingredient, seasonal_availability)
+                VALUES (?, ?, ?)
+            ''', (flavor_name, ingredient, seasonal_availability))
+            conn.commit()
+            conn.close()
+            return jsonify({"success": "flavour"})
 
-    # Insert data into Suggestions table (assuming you have a Suggestions table)
-    cursor = conn.cursor()
-    cursor.execute('INSERT INTO Suggestions (flavor_name, suggestion) VALUES (?, ?)',
-                   (flavor_name, suggestion))
-    suggestion_id = cursor.lastrowid  # Get the ID of the inserted suggestion
+        elif form_type == 'allergen':
+            ingredient = request.form['allergen_ingredient']
+            allergic_symptoms = request.form['allergic_symptoms']
 
-    # Insert selected ingredients into InventorySuggestions table (assuming a many-to-many relationship)
-    for ingredient_id in selected_ingredients:
-        cursor.execute('INSERT INTO InventorySuggestions (suggestion_id, ingredient_id) VALUES (?, ?)',
-                       (suggestion_id, ingredient_id))
+            conn = get_db_connection()
+            conn.execute('''
+                INSERT INTO Allergens (ingredient, allergic_symptoms)
+                VALUES (?, ?)
+            ''', (ingredient, allergic_symptoms))
+            conn.commit()
+            conn.close()
+            return jsonify({"success": "allergen"})
 
-    conn.commit()
-    conn.close()
-
-    # Redirect to a thank you page or any other page after submission
-    return redirect(url_for('thank_you'))
-
-# Route for thank you page (optional)
-@app.route('/thank_you')
-def thank_you():
-    return 'Thank you for your suggestion!'
-
-
+    return render_template('suggest_flavour.html')
 
 
 if __name__ == '__main__':

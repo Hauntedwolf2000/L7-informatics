@@ -1,228 +1,294 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ice Cream Application</title>
-  <style>
-    /* General Styles */
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      max-width: 800px;
-      margin: 20px auto;
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ice Cream Application</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+        background-image: url("/static/images/bg.jpg");
+      }
+      .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
 
-    /* Navbar */
-    .navbar {
-      background-color: #ff6347;
-      color: #fff;
-      padding: 10px 0;
-      text-align: center;
-      font-size: 18px;
-    }
-    .navbar a {
-      color: #fff;
-      text-decoration: none;
-      margin: 0 15px;
-    }
-    .navbar a:hover {
-      text-decoration: underline;
-    }
+      /* Navbar */
+      .navbar {
+        background-color: #ff6347;
+        color: #fff;
+        padding: 10px 0;
+        text-align: center;
+        font-size: 18px;
+      }
+      .navbar a {
+        color: #fff;
+        text-decoration: none;
+        margin: 0 15px;
+      }
+      .navbar a:hover {
+        text-decoration: underline;
+      }
 
-    /* Main Content */
-    h1, h2 {
-      color: #333;
-      text-align: center;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 20px;
-    }
-    th, td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
-    tr:hover {
-      background-color: #f5f5f5;
-    }
-    .delete-form, .quantity-form {
-      display: inline;
-    }
-    .delete-button, .quantity-button {
-      padding: 6px 12px;
-      color: white;
-      background-color: #d9534f;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-right: 5px;
-    }
-    .quantity-button {
-      background-color: #5bc0de;
-    }
-    .delete-button:hover {
-      background-color: #c9302c;
-    }
-    .quantity-button:hover {
-      background-color: #31b0d5;
-    }
+      /* Main Content */
+      h1,
+      h2 {
+        color: #333;
+        text-align: center;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      tr:hover {
+        background-color: #f5f5f5;
+      }
+      .delete-form,
+      .quantity-form {
+        display: inline;
+      }
+      .delete-button,
+      .quantity-button {
+        padding: 6px 12px;
+        color: white;
+        background-color: #d9534f;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 5px;
+      }
+      .quantity-button {
+        background-color: #5bc0de;
+      }
+      .delete-button:hover {
+        background-color: #c9302c;
+      }
+      .quantity-button:hover {
+        background-color: #31b0d5;
+      }
 
-    /* Footer */
-    footer {
-      background-color: #333;
-      color: #fff;
-      text-align: center;
-      padding: 20px 0;
-    }
-    .footer-content {
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-    }
-    .footer-section {
-      width: 30%;
-      margin: 10px 0;
-    }
-    .footer-section h3 {
-      margin-bottom: 10px;
-    }
-    .footer-section p, .footer-section a {
-      color: #fff;
-      margin-bottom: 5px;
-      text-decoration: none;
-    }
-    .footer-section a:hover {
-      text-decoration: underline;
-    }
-  </style>
-</head>
-<body>
+      /* Footer */
+      footer {
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 20px 0;
+      }
+      .footer-content {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+      }
+      .footer-section {
+        width: 30%;
+        margin: 10px 0;
+      }
+      .footer-section h3 {
+        margin-bottom: 10px;
+      }
+      .footer-section p,
+      .footer-section a {
+        color: #fff;
+        margin-bottom: 5px;
+        text-decoration: none;
+      }
+      .footer-section a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <a href="/">Home</a>
+    </nav>
+    <nav class="navbar">
+      <h1>ICE_CREAME PARLOR</h1>
+    </nav>
 
-  <!-- Navbar -->
-  <nav class="navbar">
-    <a href="/">Home</a>
-  </nav>
-  <nav class="navbar">
-    <h1>ICE_CREAME PARLOR</h1>
-  </nav>
+    <div>
+      <div class="container">
+        <h1>INVETORY</h1>
 
-  
-<div><div class="container">
-    <h1>INVETORY</h1>
-
-    <h2>Flavours</h2>
-    <table>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Season</th>
-        <th>Action</th>
-      </tr>
-      {% for flavour in flavours %}
-      <tr>
-        <td>{{ flavour['id'] }}</td>
-        <td>{{ flavour['flavor_name'] }}</td>
-        <td>{{ flavour['seasonal_availability'] }}</td>
-        <td>
-          <form class="delete-form" action="/delete_flavour/{{ flavour['id'] }}" method="post">
-            <button class="delete-button" type="submit">Delete</button>
-          </form>
-        </td>
-      </tr>
-      {% endfor %}
-    </table></div>
-
-    
-    <div><div class="container"><h2>Inventory</h2>
-    <table>
-      <tr>
-        <th>ID</th>
-        <th>Flavour ID</th>
-        <th>Ingredient</th>
-        <th>Quantity</th>
-        <th>Action</th>
-      </tr>
-      {% for item in inventory %}
-      <tr>
-        <td>{{ item['id'] }}</td>
-        <td>{{ item['flavor_id'] }}</td>
-        <td>{{ item['ingredient'] }}</td>
-        <td>{{ item['quantity'] }}</td>
-        <td>
-          <form class="quantity-form" action="/increase_quantity/{{ item['id'] }}" method="post">
-            <button class="quantity-button" type="submit">+</button>
-          </form>
-          <form class="quantity-form" action="/decrease_quantity/{{ item['id'] }}" method="post">
-            <button class="quantity-button" type="submit">-</button>
-          </form>
-          <form class="delete-form" action="/delete_inventory/{{ item['id'] }}" method="post">
-            <button class="delete-button" type="submit">Delete</button>
-          </form>
-        </td>
-      </tr>
-      {% endfor %}
-    </table></div></div>
-
-    <div><div class="container"><h2>Allergens</h2>
-    <table>
-      <tr>
-        <th>ID</th>
-        <th>Ingredient</th>
-        <th>Symptoms</th>
-        <th>Action</th>
-      </tr>
-      {% for allergen in allergens %}
-      <tr>
-        <td>{{ allergen['id'] }}</td>
-        <td>{{ allergen['ingredient'] }}</td>
-        <td>{{ allergen['allergic_symptoms'] }}</td>
-        <td>
-          <form class="delete-form" action="/delete_allergen/{{ allergen['id'] }}" method="post">
-            <button class="delete-button" type="submit">Delete</button>
-          </form>
-        </td>
-      </tr>
-      {% endfor %}
-    </table>
-  </div></div></div>
-    
-
-  <!-- Footer -->
-  <footer>
-    <div class="footer-content">
-      <div class="footer-section">
-        <h3>Contact Us</h3>
-        <p>123 Ice Cream St, Sweetville</p>
-        <p>Email: info@icecreamparlor.com</p>
-        <p>Phone: (123) 456-7890</p>
+        <h2>Flavours</h2>
+        <table>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Season</th>
+            <th>Action</th>
+          </tr>
+          {% for flavour in flavours %}
+          <tr>
+            <td>{{ flavour['id'] }}</td>
+            <td>{{ flavour['flavor_name'] }}</td>
+            <td>{{ flavour['seasonal_availability'] }}</td>
+            <td>
+              <form
+                class="delete-form"
+                action="/delete_flavour/{{ flavour['id'] }}"
+                method="post"
+              >
+                <button class="delete-button" type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
       </div>
-      <div class="footer-section">
-        <h3>Follow Us</h3>
-        <p><a href="#">Facebook</a></p>
-        <p><a href="#">Twitter</a></p>
-        <p><a href="#">Instagram</a></p>
+
+      <div>
+        <div class="container">
+          <h2>Inventory</h2>
+          <table>
+            <tr>
+              <th>ID</th>
+              <th>Flavour ID</th>
+              <th>Ingredient</th>
+              <th>Quantity</th>
+              <th>Action</th>
+            </tr>
+            {% for item in inventory %}
+            <tr>
+              <td>{{ item['id'] }}</td>
+              <td>{{ item['flavor_id'] }}</td>
+              <td>{{ item['ingredient'] }}</td>
+              <td>{{ item['quantity'] }}</td>
+              <td>
+                <form
+                  class="quantity-form"
+                  action="/increase_quantity/{{ item['id'] }}"
+                  method="post"
+                >
+                  <button class="quantity-button" type="submit">+</button>
+                </form>
+                <form
+                  class="quantity-form"
+                  action="/decrease_quantity/{{ item['id'] }}"
+                  method="post"
+                >
+                  <button class="quantity-button" type="submit">-</button>
+                </form>
+                <form
+                  class="delete-form"
+                  action="/delete_inventory/{{ item['id'] }}"
+                  method="post"
+                >
+                  <button class="delete-button" type="submit">Delete</button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
       </div>
-      <div class="footer-section">
-        <h3>Business Hours</h3>
-        <p>Mon-Fri: 10am - 10pm</p>
-        <p>Sat-Sun: 11am - 11pm</p>
+
+      <div>
+        <div class="container">
+          <h2>Allergens</h2>
+          <table>
+            <tr>
+              <th>ID</th>
+              <th>Ingredient</th>
+              <th>Symptoms</th>
+              <th>Action</th>
+            </tr>
+            {% for allergen in allergens %}
+            <tr>
+              <td>{{ allergen['id'] }}</td>
+              <td>{{ allergen['ingredient'] }}</td>
+              <td>{{ allergen['allergic_symptoms'] }}</td>
+              <td>
+                <form
+                  class="delete-form"
+                  action="/delete_allergen/{{ allergen['id'] }}"
+                  method="post"
+                >
+                  <button class="delete-button" type="submit">Delete</button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
       </div>
     </div>
-  </footer>
 
-</body>
+    <div class="container">
+      <h2>CUSTOMERY SUGGESTED FLAVOURS</h2>
+      <div class="card-body">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Flavor Name</th>
+              <th>Ingredient</th>
+              <th>Seasonal Availability</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for flavour in Customer_sugested_flavour %}
+            <tr>
+              <td>{{ flavour['id'] }}</td>
+              <td>{{ flavour['flavor_name'] }}</td>
+              <td>{{ flavour['ingredient'] }}</td>
+              <td>{{ flavour['seasonal_availability'] }}</td>
+              <td>
+                <form
+                  class="delete-form"
+                  action="/delete_Sflavour/{{ flavour['id'] }}"
+                  method="post"
+                >
+                  <button class="delete-button" type="submit">Delete</button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Contact Us</h3>
+          <p>123 Ice Cream St, Sweetville</p>
+          <p>Email: info@icecreamparlor.com</p>
+          <p>Phone: (123) 456-7890</p>
+        </div>
+        <div class="footer-section">
+          <h3>Follow Us</h3>
+          <p><a href="#">Facebook</a></p>
+          <p><a href="#">Twitter</a></p>
+          <p><a href="#">Instagram</a></p>
+        </div>
+        <div class="footer-section">
+          <h3>Business Hours</h3>
+          <p>Mon-Fri: 10am - 10pm</p>
+          <p>Sat-Sun: 11am - 11pm</p>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>
